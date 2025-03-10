@@ -3,12 +3,7 @@ import sqlite3
 conn = sqlite3.connect("kutuphane.db", check_same_thread=False)
 c = conn.cursor()
 
-c.execute('''CREATE TABLE IF NOT EXISTS kitaplar (
-    id INTEGER PRIMARY KEY AUTOINCREMENT, 
-    kitapadi TEXT NOT NULL, 
-    yazar TEXT NOT NULL, 
-    tarih INTEGER, 
-    sayfasayisi INTEGER)''')
+c.execute('''CREATE TABLE IF NOT EXISTS kitaplar (id INTEGER PRIMARY KEY AUTOINCREMENT, kitapadi TEXT NOT NULL, yazar TEXT NOT NULL, tarih INTEGER, sayfasayisi INTEGER)''')
 
 conn.commit()
 
@@ -19,12 +14,11 @@ def kitap_ekle():
     tarih = int(input("Yayın yılı: "))
     sayfa_sayisi = int(input("Sayfa sayısı: "))
 
-    conn = sqlite3.connect("kutuphane.db")  # Veritabanına bağlan
+    conn = sqlite3.connect("kutuphane.db") 
     c = conn.cursor()
-    c.execute("INSERT INTO kitaplar (kitapadi, yazar, tarih, sayfasayisi) VALUES (?, ?, ?, ?)",
-              (kitap_adi, yazar, tarih, sayfa_sayisi))
-    conn.commit()  # Değişiklikleri kaydet
-    conn.close()  # Bağlantıyı kapat
+    c.execute("INSERT INTO kitaplar (kitapadi, yazar, tarih, sayfasayisi) VALUES (?, ?, ?, ?)", (kitap_adi, yazar, tarih, sayfa_sayisi))
+    conn.commit() 
+    conn.close() 
     print("Kitap eklendi!")
 
 
@@ -53,7 +47,7 @@ def kitap_guncelle():
     c = conn.cursor()
     c.execute("UPDATE kitaplar SET kitapadi = ?, yazar = ?, tarih = ?, sayfasayisi = ? WHERE id = ?",
               (kitap_adi, yazar, tarih, sayfa_sayisi, kitap_id))
-    conn.commit()  # Değişiklikleri kaydet
+    conn.commit()
     conn.close()
     print("Kitap güncellendi!")
 
@@ -64,7 +58,7 @@ def kitap_sil():
     conn = sqlite3.connect("kutuphane.db")
     c = conn.cursor()
     c.execute("DELETE FROM kitaplar WHERE id = ?", (kitap_id,))
-    conn.commit()  # Değişiklikleri kaydet
+    conn.commit()  
     conn.close()
     print("Kitap silindi!")
 
